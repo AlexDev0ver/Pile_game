@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Pile game</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+</body>
+<script type="text/javascript">
+	function Pile (value) {
+	this.value = value
+}
+Pile.prototype.plus3 = function () {
+	this.value += 3	
+	return this.value
+}
+Pile.prototype.multiply3 = function () {
+	this.value *= 3
+	return this.value
+}
+
+var pile1 = new Pile (2)
+var pile2 = new Pile (3)
+
+// start creating interface
+document.querySelector('body').appendChild(document.createElement('button'))
+document.getElementsByTagName('button')[0].id = "pileOnePlus"
+document.getElementById('pileOnePlus').innerHTML = "Pile One +3"
+document.querySelector('body').appendChild(document.createElement('button'))
+document.getElementsByTagName('button')[1].id = "pileOneMultiply"
+document.getElementById('pileOneMultiply').innerHTML = "Pile One *3"
+document.querySelector('body').appendChild(document.createElement('button'))
+document.getElementsByTagName('button')[2].id = "pileTwoPlus"
+document.getElementById('pileTwoPlus').innerHTML = "Pile Two +3"
+document.querySelector('body').appendChild(document.createElement('button'))
+document.getElementsByTagName('button')[3].id = "pileTwoMultiply"
+document.getElementById('pileTwoMultiply').innerHTML = "Pile Two *3"
+document.querySelector('body').appendChild(document.createElement('div'))
+document.getElementsByTagName('div')[0].id = 'pileOne'
+document.querySelector('body').appendChild(document.createElement('div'))
+document.getElementsByTagName('div')[1].id = 'pileTwo'
+// end creating interface
+
+function setValue () {
+	document.getElementById('pileOne').innerHTML = ("1st Pile : " + pile1.value)
+	document.getElementById('pileTwo').innerHTML = ("2nd Pile : " + pile2.value)
+}
+setValue()
+
+function chouseYourSide () {	
+	if (confirm('Do you want be Player One?')) {
+		document.getElementById('pileTwoPlus').disabled = true
+		document.getElementById('pileTwoMultiply').disabled = true
+	} else {
+		document.getElementById('pileOnePlus').disabled = true
+		document.getElementById('pileOneMultiply').disabled = true
+	}
+}
+chouseYourSide()
+
+function block1 () {
+	document.getElementById('pileOnePlus').disabled = true
+	document.getElementById('pileOneMultiply').disabled = true
+	document.getElementById('pileTwoPlus').disabled = false
+	document.getElementById('pileTwoMultiply').disabled = false
+}
+
+function block2 () {
+	document.getElementById('pileOnePlus').disabled = false
+	document.getElementById('pileOneMultiply').disabled = false
+	document.getElementById('pileTwoPlus').disabled = true
+	document.getElementById('pileTwoMultiply').disabled = true
+}
+
+function reset () {
+	pile1.value = 2
+	pile2.value = 3
+	document.getElementById('pileOnePlus').disabled = false
+	document.getElementById('pileOneMultiply').disabled = false
+	document.getElementById('pileTwoPlus').disabled = false
+	document.getElementById('pileTwoMultiply').disabled = false
+}
+
+function winner () {
+	if ( pile1.value == 24 ) {
+		return ('Win Player One with score : 24')
+	} else if (pile2.value == 24 ) {
+		return ('Win Player Two with score : 24')
+	} else if (pile1.value > 24 ) {
+		return ('Win Player Two with score : '+pile2.value )
+	} else if (pile2.value > 24 ) {
+		return ('Win Player One with score : '+pile1.value )
+	}
+}
+
+function endGame () {
+	alert('Game over! ' + winner() + '. Do you want star over?')
+	reset()
+	chouseYourSide()
+}
+
+document.getElementById('pileOnePlus').addEventListener ('click', function () {
+	pile1.plus3()
+	setValue()
+	block1()
+})
+document.getElementById('pileTwoPlus').addEventListener ('click', function () {
+	pile2.plus3()
+	setValue()
+	block2()
+})
+document.getElementById('pileOneMultiply').addEventListener ('click', function () {
+	pile1.multiply3()
+	setValue()
+	block1()
+})
+document.getElementById('pileTwoMultiply').addEventListener ('click', function () {
+	pile2.multiply3()
+	setValue()
+	block2()
+})
+
+document.getElementsByTagName('body')[0].addEventListener('click', function(){
+	if (pile1.value>=24 || pile2.value>=24) {
+		endGame()
+		setValue()
+	}
+})
+
+</script>
+</html>
